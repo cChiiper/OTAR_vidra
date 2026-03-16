@@ -1,0 +1,7 @@
+line_01 apple
+line_02 banana
+line_03 cherry
+line_04 date
+line_05 elderberry
+line_06 fig
+line_07 grape
