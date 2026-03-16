@@ -1,20 +1,22 @@
 process HEADTEXT {
+    label 'process_single'
 
-    tag "$input_file"
+    tag "${meta.id}"
 
-    publishDir "${params.outdir}", mode: 'copy'
+    publishDir "${params.outdir}", mode: 'copy', overwrite: true
 
     input:
-    path input_file
+    tuple val(meta), path(input_file)
+    path headtext_script
 
     output:
-    path "head.txt"
+    tuple val(meta), path("${meta.id}.head.txt"), emit: txt
 
     script:
     """
-    python ${projectDir}/tools/headtext.py \
+    python3 "${headtext_script}" \
         --input "${input_file}" \
-        --output head.txt \
+        --output "${meta.id}.head.txt" \
         --n_lines ${params.n_lines}
     """
 }
