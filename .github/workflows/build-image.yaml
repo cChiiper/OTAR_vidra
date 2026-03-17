@@ -60,13 +60,13 @@ jobs:
                   context: .
                   push: true
                   tags: |
-                      ghcr.io/cChiiper/otar_vidra:latest
-                      ghcr.io/cChiiper/otar_vidra:${{ env.TAG }}
+                      ghcr.io/cchiiper/otar_vidra:latest
+                      ghcr.io/cchiiper/otar_vidra:${{ env.TAG }}
 
             - id: generate-attestations
               name: Generate artifact attestation
               uses: actions/attest-build-provenance@v3
               with:
-                  subject-name: ghcr.io/cChiiper/otar_vidra
+                  subject-name: ghcr.io/cchiiper/otar_vidra
                   subject-digest: ${{ steps.push.outputs.digest }}
                   push-to-registry: true
