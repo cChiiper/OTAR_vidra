@@ -60,8 +60,8 @@ jobs:
                   context: .
                   push: true
                   tags: |
-                      ghcr.io/${{ github.repository }}:latest
-                      ghcr.io/${{ github.repository }}:${{ env.TAG }}
+                      ghcr.io/cChiiper/otar_vidra/:latest
+                      ghcr.io/cChiiper/otar_vidra/:${{ env.TAG }}
 
             - id: generate-attestations
               name: Generate artifact attestation
