@@ -4,3 +4,6 @@ clean:
 
 docker_build:
 	docker build --no-cache --platform=linux/amd64 -t headtext:latest .
+
+docker_pull:
+	docker pull ghcr.io/cchiiper/otar_vidra:latest

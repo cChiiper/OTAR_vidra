@@ -16,7 +16,5 @@ workflow {
             tuple([id: input_file.baseName], input_file)
         }
 
-    ch_headtext_script = Channel.value(file("${projectDir}/tools/headtext.py"))
-
-    HEADTEXT(ch_input, ch_headtext_script)
+    HEADTEXT(ch_input)
 }

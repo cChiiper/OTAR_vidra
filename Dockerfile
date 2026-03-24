@@ -12,12 +12,11 @@ ENV SPARK_LOCAL_HOSTNAME=localhost
 RUN apt-get update && apt-get install -y --no-install-recommends \
     bash \
     default-jre-headless \
+    procps \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir pytest pyspark
+RUN pip install --no-cache-dir pyspark
 
-COPY pytest.ini /app/pytest.ini
 COPY tools /app/tools
-COPY tests /app/tests
 
 CMD ["bash"]

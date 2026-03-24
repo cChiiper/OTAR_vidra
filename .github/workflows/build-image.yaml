@@ -6,6 +6,7 @@ name: Build and Push to Artifact Registry
 env:
     TAG: "${{ github.ref_name}}"
     REPO: "${{ github.event.repository.name}}"
+    IMAGE_URI: ghcr.io/cchiiper/otar_vidra
 
 jobs:
     push-to-ghcr-and-gar:
@@ -60,13 +61,13 @@ jobs:
                   context: .
                   push: true
                   tags: |
-                      ghcr.io/cchiiper/otar_vidra:latest
-                      ghcr.io/cchiiper/otar_vidra:${{ env.TAG }}
+                      ${IMAGE_URI}:latest
+                      ${IMAGE_URI}:${{ env.TAG }}
 
             - id: generate-attestations
               name: Generate artifact attestation
               uses: actions/attest-build-provenance@v3
               with:
-                  subject-name: ghcr.io/cchiiper/otar_vidra
+                  subject-name: ${IMAGE_URI}
                   subject-digest: ${{ steps.push.outputs.digest }}
                   push-to-registry: true
