@@ -61,13 +61,13 @@ jobs:
                   context: .
                   push: true
                   tags: |
-                      ${IMAGE_URI}:latest
-                      ${IMAGE_URI}:${{ env.TAG }}
+                      ${{ env.IMAGE_URI }}:latest
+                      ${{ env.IMAGE_URI }}:${{ env.TAG }}
 
             - id: generate-attestations
               name: Generate artifact attestation
               uses: actions/attest-build-provenance@v3
               with:
-                  subject-name: ${IMAGE_URI}
+                  subject-name: ${{ env.IMAGE_URI }}
                   subject-digest: ${{ steps.push.outputs.digest }}
                   push-to-registry: true
