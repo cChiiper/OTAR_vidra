@@ -19,3 +19,8 @@ coverage.xml
 **/.pytest_cache/
 testdata/output/
 testdata/work/
+prompt_codex.txt
+temp_shell_output.txt
+vidra5_pipeline_dag.dot
+error_output.txt
+conf/make.local.mk

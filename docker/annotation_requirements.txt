@@ -1,0 +1,4 @@
+gcsfs
+numpy
+pandas
+pyarrow

@@ -1,0 +1,71 @@
+data {
+// Hyperparameters
+  real<lower=0> h1;
+// Observations
+  int<lower=0> N; // Number of observations
+  // int<lower=0> K; // Number of total G1 (i.e. number of sources)  
+// Groups
+  real numG1; // Number of sources. at the moment AZ, clinvar and GWAS-QTL
+  real numG2; // Subgroup indicators qtl type
+// // Measure X - protein function
+// QTLs
+  real xc; 
+  real xcse; 
+// Protein predictions
+  real as_conservation;
+  real as_sift;
+  real as_polyphen;
+  real as_cadd;
+  real as_alphamissense;
+  real as_revel;
+// // Measure Y - disease risk
+// This are coming from GWAS (including AZ rare-variants one)
+  real yOR; // Response variable 
+  real yORse; // Response variable 
+// Phenotype predictions
+  real as_clinicalSignificance;
+  real as_primateai;
+}
+parameters {
+  // Vectors with common variants effects
+  real xcest;
+  real yORest; 
+  real slope; // Slope for protein function
+  real protein_prior;
+  real disease_prior; 
+}
+model {
+// Protein
+// sd have been calculated on the sd of the different tools in the whole prediction set
+protein_prior ~ normal( as_revel, .28);
+protein_prior ~ normal( as_cadd, .13);
+protein_prior ~ normal( as_alphamissense, .3);
+// Disease
+disease_prior ~ normal( as_clinicalSignificance, .2);
+slope ~ normal( 0, 5 );
+// Weak priors for latent effect-size parameters — ensures proper posterior
+// even when not constrained by the QTL likelihood branch below
+xcest ~ normal(0, 0.2);
+yORest ~ normal(0, 1.0);
+if (numG1 == 0) { // QTL common variants (eQTL or pQTL)
+  // // Priors
+  xc ~ normal( xcest, xcse);
+  yOR ~ normal( yORest, yORse);
+  // Guard against division by zero — xc is DATA (0.0 when QTL effect missing)
+  if (abs(xc) > 1e-4)
+    slope ~ normal(yOR / xc, abs(yORse/xcest));
+  } 
+else 
+if (numG1 == 1) { // AZ PheWAS rare variants
+  slope ~ normal(yORest / protein_prior, abs(yORse/0.1));
+} 
+else 
+if (numG1 == 2) { // ClinVar rare variants
+  slope ~ normal(yORest / protein_prior, abs(yORse/0.1));
+} 
+else 
+if (numG1 == 3) { // Coding GWAS (single-variant coding GWAS are filtered out before reaching here)
+  slope ~ normal(disease_prior / protein_prior, 0.1); 
+}
+}
+
